@@ -1,5 +1,5 @@
 import connectDb from "@/lib/mongodb";
-import User from "@/models/user";
+import Demand from "@/models/demand";
 import { NextResponse } from "next/server";
 
 connectDb();
@@ -7,12 +7,12 @@ connectDb();
 export async function POST(request) {
     try {
         const requestBody = await request.json();
-        const { name, email, password } = requestBody;
-        const newUser = new User({ name, email, password });
-        const savedUser = await newUser.save();
-        return NextResponse.json({message: "User created successfully",
+        const { name, date, demand } = requestBody;
+        const newDemand = new Demand({ name, date, demand });
+        const savedDemand = await newDemand.save();
+        return NextResponse.json({ message: "Demand created successfully",
             success: true,
-            user: savedUser,
+            demand: savedDemand,
         });
     } catch (error) {
         NextResponse.json({ error: error.message }, { status: 500 });
@@ -21,8 +21,8 @@ export async function POST(request) {
 
 export async function GET() {
     try {
-        const users = await User.find({});
-        return NextResponse.json(users);
+        const demands = await Demand.find({});
+        return NextResponse.json(demands);
     } catch (error) {
         NextResponse.json({ error: error.message }, { status: 500 });
     }
