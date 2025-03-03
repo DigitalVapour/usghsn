@@ -14,13 +14,22 @@ export default function Home() {
         date: "",
         demand: ""
     });
-
+  
     const handleClick = async () => {
       setLoading(true);
         try {
+          if(newDemand.name === "" || newDemand.date === "" || newDemand.demand === "") {
+            toast.error("All fields are required");
+            setLoading(false);
+            return;
+          }
             const respose = await axios.post("/api/demand", newDemand);
             setResData(respose.data);
-            toast.success(respose.data.message);
+            if (respose.data.success) {
+              toast.success(respose.data.message);
+            }else {
+              toast.error(respose.data.message);
+            }
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
@@ -65,7 +74,7 @@ export default function Home() {
     }
     return arr;
 };
-const dateArray = getDaysArray(new Date(2025, 0, 1), new Date(2025, 11, 31));
+const dateArray = getDaysArray(new Date("2025-01-01"), new Date("2025-12-31"));
 
 const shifts = ["Morning", "Evening", "OT", "LR", "ER"];
 
@@ -78,20 +87,20 @@ const shifts = ["Morning", "Evening", "OT", "LR", "ER"];
 
     
 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-10 fixed justify-center w-full z-30">  
-  <select onChange={(e) => setNewDemand({...newDemand, name:e.target.value})} name='sisterName' id="sisterName" className="m-1 md:m-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+  <select onChange={(e) => setNewDemand({...newDemand, name:e.target.value})} name='sisterName' id="sisterName" className="m-1 md:m-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+        <option value="">Select Name</option>
     {users.map((user, index) => (
         <option key={index} value={user.name}>{user.name}</option>
     ))}    
   </select>
   <select onChange={(e) => setNewDemand({...newDemand, date:e.target.value})} name='date' id="date" className="m-1 md:m-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    
+        <option value="">Select Date</option>
     {dateArray.map((date, index) => (
         <option key={index} value={date}>{date}</option>
     ))}    
   </select>
   <select onChange={(e) => setNewDemand({...newDemand, demand:e.target.value})} name='shift' id="shift" className="m-1 md:m-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    
+        <option value="">Select Demand</option>
     {shifts.map((shift, index) => (
         <option key={index} value={shift}>{shift}</option>
     ))}    

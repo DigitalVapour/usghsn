@@ -1,7 +1,11 @@
-export default function AdminPage(){
-    return (
+import AllDemands from "@/components/alldemands";
+import DateRangeSelector from "@/components/daterangeselector";
+
+export default function AdminPage() {
+    return(
         <>
-        <h1>This is admin page</h1>
+        <DateRangeSelector />
+        <AllDemands />
         </>
     )
 }
