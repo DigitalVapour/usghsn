@@ -74,9 +74,9 @@ export default function Home() {
     }
     return arr;
 };
-const dateArray = getDaysArray(new Date("2025-01-01"), new Date("2025-12-31"));
+const dateArray = getDaysArray(new Date("2025-03-01"), new Date("2025-12-31"));
 
-const shifts = ["Morning", "Evening", "OT", "LR", "ER"];
+const shifts = ["M", "E", "N", "OT", "LR", "ER", "CCL"];
 
 
 
